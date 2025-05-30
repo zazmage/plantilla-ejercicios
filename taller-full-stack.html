@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <title>🚀 Taller: Backend Node.js + Frontend React con TypeScript</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: #2c3e50;
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    header {
+      background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+      color: white;
+      padding: 3rem 0;
+      text-align: center;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+      position: relative;
+      overflow: hidden;
+    }
+
+    header::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="%23ffffff" stroke-width="0.5" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
+      opacity: 0.1;
+    }
+
+    .header-content {
+      position: relative;
+      z-index: 1;
+    }
+
+    h1 {
+      font-size: 2.8rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+    }
+
+    .subtitle {
+      font-size: 1.2rem;
+      opacity: 0.9;
+      max-width: 600px;
+      margin: 0 auto;
+      font-weight: 300;
+    }
+
+    .tech-badges {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      margin-top: 2rem;
+      flex-wrap: wrap;
+    }
+
+    .badge {
+      background: rgba(255,255,255,0.2);
+      padding: 0.5rem 1rem;
+      border-radius: 25px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255,255,255,0.3);
+    }
+
+    main {
+      padding: 3rem 0;
+    }
+
+    .section {
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+      margin-bottom: 2.5rem;
+      padding: 2.5rem;
+      position: relative;
+      overflow: hidden;
+      transform: translateY(0);
+      transition: all 0.3s ease;
+    }
+
+    .section:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 25px 50px rgba(0,0,0,0.15);
+    }
+
+    .section::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background: linear-gradient(90deg, #667eea, #764ba2);
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 1.5rem;
+      gap: 1rem;
+    }
+
+    .section-icon {
+      width: 50px;
+      height: 50px;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 1.5rem;
+    }
+
+    h2 {
+      font-size: 1.8rem;
+      color: #2c3e50;
+      font-weight: 600;
+      margin: 0;
+    }
+
+    .objectives {
+      background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin: 1.5rem 0;
+      border-left: 4px solid #667eea;
+    }
+
+    .objectives h3 {
+      color: #667eea;
+      margin-bottom: 1rem;
+      font-size: 1.2rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .step-list {
+      list-style: none;
+      counter-reset: step-counter;
+    }
+
+    .step-list li {
+      counter-increment: step-counter;
+      margin-bottom: 1rem;
+      padding-left: 3rem;
+      position: relative;
+    }
+
+    .step-list li::before {
+      content: counter(step-counter);
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 2rem;
+      height: 2rem;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 0.9rem;
+    }
+
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
+      margin: 1.5rem 0;
+    }
+
+    .feature-card {
+      background: #f8f9fa;
+      border-radius: 12px;
+      padding: 1.5rem;
+      border: 1px solid #e9ecef;
+      transition: all 0.3s ease;
+    }
+
+    .feature-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+      border-color: #667eea;
+    }
+
+    .feature-card h4 {
+      color: #667eea;
+      margin-bottom: 0.5rem;
+      font-size: 1.1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    code {
+      background: #f1f3f4;
+      padding: 0.3rem 0.6rem;
+      border-radius: 6px;
+      font-family: 'Fira Code', 'Consolas', monospace;
+      color: #d73a49;
+      font-size: 0.9rem;
+      font-weight: 500;
+    }
+
+    pre {
+      background: #1a1a1a;
+      color: #f8f8f2;
+      padding: 1.5rem;
+      border-radius: 12px;
+      overflow-x: auto;
+      font-family: 'Fira Code', 'Consolas', monospace;
+      font-size: 0.9rem;
+      line-height: 1.5;
+      box-shadow: inset 0 2px 10px rgba(0,0,0,0.3);
+      margin: 1rem 0;
+    }
+
+    .command-box {
+      background: linear-gradient(135deg, #2d3748, #4a5568);
+      color: #e2e8f0;
+      padding: 1rem 1.5rem;
+      border-radius: 8px;
+      font-family: 'Fira Code', monospace;
+      margin: 1rem 0;
+      border-left: 4px solid #48bb78;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .command-box::before {
+      content: '💻';
+      font-size: 1.2rem;
+    }
+
+    .warning-box {
+      background: linear-gradient(135deg, #fff3cd, #ffeaa7);
+      border: 1px solid #ffc107;
+      border-radius: 8px;
+      padding: 1rem;
+      margin: 1rem 0;
+      display: flex;
+      align-items: flex-start;
+      gap: 0.5rem;
+    }
+
+    .warning-box::before {
+      content: '⚡';
+      font-size: 1.2rem;
+      margin-top: 0.1rem;
+    }
+
+    .success-box {
+      background: linear-gradient(135deg, #d4edda, #a3d9a4);
+      border: 1px solid #28a745;
+      border-radius: 8px;
+      padding: 1rem;
+      margin: 1rem 0;
+      display: flex;
+      align-items: flex-start;
+      gap: 0.5rem;
+    }
+
+    .success-box::before {
+      content: '✅';
+      font-size: 1.2rem;
+      margin-top: 0.1rem;
+    }
+
+    footer {
+      background: #2c3e50;
+      color: white;
+      text-align: center;
+      padding: 2rem 0;
+      margin-top: 3rem;
+    }
+
+    .footer-content {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .author-tag {
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      padding: 0.5rem 1rem;
+      border-radius: 25px;
+      font-weight: 500;
+    }
+
+    @media (max-width: 768px) {
+      h1 { font-size: 2.2rem; }
+      .section { padding: 1.5rem; margin-bottom: 1.5rem; }
+      .feature-grid { grid-template-columns: 1fr; }
+      .tech-badges { gap: 0.5rem; }
+      .badge { padding: 0.4rem 0.8rem; font-size: 0.8rem; }
+    }
+
+    .pulse {
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0% { opacity: 1; }
+      50% { opacity: 0.7; }
+      100% { opacity: 1; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container">
+      <div class="header-content">
+        <h1>🚀 Taller Full-Stack</h1>
+        <p class="subtitle">Construye tu primera aplicación completa con Backend en Node.js y Frontend en React + TypeScript</p>
+        <div class="tech-badges">
+          <span class="badge">🟢 Node.js</span>
+          <span class="badge">⚡ Express</span>
+          <span class="badge">⚛️ React</span>
+          <span class="badge">📘 TypeScript</span>
+          <span class="badge">🔥 Vite</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="container">
+
+      <section class="section">
+        <div class="section-header">
+          <div class="section-icon">
+            <i class="fas fa-rocket"></i>
+          </div>
+          <h2>¡Bienvenido a tu primer proyecto Full-Stack!</h2>
+        </div>
+        
+        <p>🎯 <strong>¿Estás listo para crear algo increíble?</strong> En este taller construirás desde cero una aplicación web completa que conecta un servidor Node.js con una interfaz React moderna.</p>
+        
+        <div class="objectives">
+          <h3><i class="fas fa-bullseye"></i> Lo que vas a lograr</h3>
+          <div class="feature-grid">
+            <div class="feature-card">
+              <h4><i class="fas fa-server"></i> Backend Robusto</h4>
+              <p>Crear un servidor Express con múltiples endpoints y manejo profesional de errores</p>
+            </div>
+            <div class="feature-card">
+              <h4><i class="fas fa-desktop"></i> Frontend Moderno</h4>
+              <p>Desarrollar una interfaz React con TypeScript y componentes reutilizables</p>
+            </div>
+            <div class="feature-card">
+              <h4><i class="fas fa-plug"></i> Integración Total</h4>
+              <p>Conectar ambas partes para crear una experiencia de usuario completa</p>
+            </div>
+            <div class="feature-card">
+              <h4><i class="fas fa-code"></i> Buenas Prácticas</h4>
+              <p>Implementar patrones profesionales de desarrollo y arquitectura</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="success-box">
+          <div>
+            <strong>¡Al finalizar tendrás:</strong> Una aplicación web funcional que muestra datos en tiempo real, con tarjetas interactivas, tablas dinámicas y listas organizadas. ¡Tu primer paso hacia convertirte en un desarrollador Full-Stack!
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-header">
+          <div class="section-icon">
+            <i class="fas fa-server"></i>
+          </div>
+          <h2>Paso 1: Construyendo tu API Backend</h2>
+        </div>
+        
+        <p>🔧 <strong>Vamos a crear el cerebro de tu aplicación:</strong> un servidor Node.js que proporcionará datos a través de una API REST profesional.</p>
+
+        <div class="warning-box">
+          <div><strong>Archivo clave:</strong> <code>server.js</code> - Este será el corazón de tu backend</div>
+        </div>
+
+        <h3>🎯 Endpoints que implementarás</h3>
+        <div class="feature-grid">
+          <div class="feature-card">
+            <h4><i class="fas fa-users"></i> /api/users</h4>
+            <p>Lista completa de usuarios con ID, nombre y email</p>
+          </div>
+          <div class="feature-card">
+            <h4><i class="fas fa-shopping-cart"></i> /api/products</h4>
+            <p>Catálogo de productos con ID, nombre y precio</p>
+          </div>
+          <div class="feature-card">
+            <h4><i class="fas fa-newspaper"></i> /api/posts</h4>
+            <p>Publicaciones con ID, título y contenido</p>
+          </div>
+          <div class="feature-card">
+            <h4><i class="fas fa-cog"></i> /api/settings</h4>
+            <p>Configuración general de la aplicación</p>
+          </div>
+        </div>
+
+        <h3>✨ Características profesionales que incluirás</h3>
+        <ol class="step-list">
+          <li><strong>Logging inteligente:</strong> Cada petición se registrará en consola para monitoreo</li>
+          <li><strong>Manejo robusto de errores:</strong> Implementación de try/catch en todos los endpoints</li>
+          <li><strong>Respuestas consistentes:</strong> Status 200 para éxito, 500 para errores internos</li>
+          <li><strong>Estructura JSON clara:</strong> Datos organizados y fáciles de consumir</li>
+        </ol>
+
+        <div class="command-box">
+          node server.js
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-header">
+          <div class="section-icon">
+            <i class="fas fa-desktop"></i>
+          </div>
+          <h2>Paso 2: Creando tu Frontend React</h2>
+        </div>
+        
+        <p>⚛️ <strong>¡Hora de darle vida a los datos!</strong> Construirás una interfaz moderna con React, TypeScript y Vite para mostrar la información de manera atractiva.</p>
+
+        <div class="warning-box">
+          <div><strong>Tecnología de vanguardia:</strong> Usaremos Vite para un desarrollo súper rápido y TypeScript para código más seguro</div>
+        </div>
+
+        <h3>🚀 Inicialización del proyecto</h3>
+        <div class="command-box">
+          npm create vite@latest my-app -- --template react-ts
+        </div>
+
+        <h3>🎨 Componentes que desarrollarás</h3>
+        <p>Cada componente tendrá su propia responsabilidad y estilo único:</p>
+
+        <div class="feature-grid">
+          <div class="feature-card">
+            <h4><i class="fas fa-id-card"></i> UsersList.tsx</h4>
+            <p><strong>Tarjetas elegantes</strong> - Muestra usuarios en un diseño tipo card con foto, nombre y email</p>
+          </div>
+          <div class="feature-card">
+            <h4><i class="fas fa-table"></i> ProductsTable.tsx</h4>
+            <p><strong>Tabla profesional</strong> - Catálogo organizado con ID, nombre y precio formateado</p>
+          </div>
+          <div class="feature-card">
+            <h4><i class="fas fa-list"></i> PostsList.tsx</h4>
+            <p><strong>Lista dinámica</strong> - Publicaciones con título destacado y preview del contenido</p>
+          </div>
+        </div>
+
+        <h3>🔥 Funcionalidades avanzadas</h3>
+        <ol class="step-list">
+          <li><strong>Fetch asíncrono:</strong> Consumo eficiente de la API con manejo de estados</li>
+          <li><strong>Estados de carga:</strong> Indicadores visuales mientras se cargan los datos</li>
+          <li><strong>Manejo de errores:</strong> Mensajes amigables si algo sale mal</li>
+          <li><strong>Componentes reutilizables:</strong> Código limpio y mantenible</li>
+        </ol>
+
+        <div class="success-box">
+          <div><strong>🎉 Resultado:</strong> Una interfaz moderna que se actualiza automáticamente con los datos de tu API</div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-header">
+          <div class="section-icon">
+            <i class="fas fa-plug"></i>
+          </div>
+          <h2>Paso 3: ¡Conectando todo y viendo la magia!</h2>
+        </div>
+        
+        <p>🔗 <strong>El momento más emocionante:</strong> vamos a conectar tu backend con el frontend y ver cómo cobran vida tus datos.</p>
+
+        <h3>🚀 Secuencia de lanzamiento</h3>
+        <ol class="step-list">
+          <li>
+            <strong>Activar el servidor backend</strong>
+            <div class="command-box">node server.js</div>
+            <p>Tu API estará disponible en <code>http://localhost:3000</code></p>
+          </li>
+          <li>
+            <strong>Instalar dependencias del frontend</strong>
+            <div class="command-box">npm install</div>
+          </li>
+          <li>
+            <strong>Lanzar la aplicación React</strong>
+            <div class="command-box">npm run dev</div>
+            <p>Tu interfaz se abrirá automáticamente en el navegador</p>
+          </li>
+        </ol>
+
+        <div class="success-box">
+          <div>
+            <strong>🎊 ¡Momento de celebrar!</strong> Verás tus datos fluyendo desde el servidor hacia la interfaz en tiempo real. Observa cómo se registran las peticiones en la consola del servidor.
+          </div>
+        </div>
+
+        <div class="warning-box">
+          <div><strong>💡 Pro Tip:</strong> Abre las herramientas de desarrollador del navegador para ver las peticiones HTTP en la pestaña Network</div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-header">
+          <div class="section-icon">
+            <i class="fas fa-graduation-cap"></i>
+          </div>
+          <h2>Paso 4: Llevándolo al siguiente nivel</h2>
+        </div>
+        
+        <p>🚀 <strong>¿Quieres impresionar aún más?</strong> Aquí tienes funcionalidades adicionales que harán que tu aplicación se vea completamente profesional:</p>
+
+        <h3>🛡️ Manejo profesional de rutas</h3>
+        <div class="feature-card">
+          <h4><i class="fas fa-exclamation-triangle"></i> Rutas 404 elegantes</h4>
+          <p>Añade al final de tu <code>server.js</code>:</p>
+          <pre>app.use((req, res) => {
+  console.log(`❌ Ruta no encontrada: ${req.method} ${req.url}`);
+  res.status(404).json({ 
+    error: 'Ruta no encontrada',
+    message: 'La ruta solicitada no existe en nuestra API' 
+  });
+});</pre>
+        </div>
+
+        <h3>🎯 Recursos individuales dinámicos</h3>
+        <div class="feature-card">
+          <h4><i class="fas fa-search"></i> Endpoints con parámetros</h4>
+          <p>Implementa rutas como <code>/api/users/:id</code> para obtener elementos específicos:</p>
+          <pre>app.get('/api/users/:id', (req, res) => {
+  try {
+    const { id } = req.params;
+    const user = users.find(u => u.id === parseInt(id));
+    
+    if (user) {
+      console.log(`✅ Usuario encontrado: ${user.name}`);
+      res.status(200).json(user);
+    } else {
+      console.log(`❌ Usuario no encontrado: ID ${id}`);
+      res.status(404).json({ error: 'Usuario no encontrado' });
+    }
+  } catch (error) {
+    console.error('💥 Error:', error);
+    res.status(500).json({ error: 'Error interno del servidor' });
+  }
+});</pre>
+        </div>
+
+        <div class="success-box">
+          <div>
+            <strong>🏆 ¡Felicitaciones!</strong> Has construido una aplicación web completa con todas las características de un desarrollo profesional. Tienes las bases sólidas para crear aplicaciones aún más complejas.
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <div class="footer-content">
+        <span>Diseñado con ❤️ por</span>
+        <span class="author-tag">👨‍💻 Daniel Castaño</span>
+        <span class="pulse">✨ Happy Coding!</span>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>
