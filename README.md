@@ -1,17 +1,11 @@
 # Plantilla de Ejercicios
 
-Esta plantilla contiene varios documentos HTML con guías paso a paso para tus prácticas de JavaScript y desarrollo Full‑Stack con Node.js, React y TypeScript.
+Este repositorio contiene diversas guías en formato HTML para practicar JavaScript y el desarrollo full‑stack. Abre `dashboard.html` en tu navegador para elegir rápidamente el taller que quieras seguir.
 
 ## Contenido
 
-- **`index.html`** – guía del taller inicial para crear tu primera aplicación con Node.js y React.
-- **`fullstack-react-nodejs-typescript.html`** – taller avanzado de CRUD con todas las dependencias en TypeScript.
-- **`ejercicios-basicos-javascript.html`** – recopilación de 20 ejercicios básicos de JavaScript.
+- **Fundamentos de JavaScript** – `ejercicios-basicos-javascript.html`
+- **Backend Node.js + React TypeScript** – `index.html`
+- **Taller Full-Stack CRUD Avanzado** – `fullstack-react-nodejs-typescript.html`
 
-## Cómo usarlo
-
-1. Clona este repositorio.
-2. Abre cualquiera de los archivos HTML con tu navegador.
-3. Sigue los pasos y comandos que encontrarás en cada sección.
-
-¡Felices ejercicios!
+Cada archivo puede abrirse directamente en el navegador sin necesidad de un servidor adicional.

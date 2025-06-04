@@ -52,9 +52,22 @@
     @media (max-width: 768px) { h1 { font-size: 2.5rem; } .section { padding: 2rem; margin-bottom: 2rem; } .feature-grid { grid-template-columns: 1fr; } .tech-badges { gap: 1rem; } .badge { padding: 0.6rem 1rem; font-size: 0.9rem; } .section-header { flex-direction: column; text-align: center; } .section-icon { width: 50px; height: 50px; font-size: 1.5rem; } h2 { font-size: 1.8rem; } }
     .pulse { animation: pulse 2s infinite; }
     @keyframes pulse { 0% { opacity: 1; transform: scale(1); } 50% { opacity: 0.8; transform: scale(1.05); } 100% { opacity: 1; transform: scale(1); } }
+      .nav-dashboard {
+        text-align: center;
+        background: rgba(0,0,0,0.1);
+        padding: 0.5rem 0;
+      }
+      .nav-dashboard a {
+        color: white;
+        text-decoration: none;
+        font-weight: bold;
+      }
   </style>
 </head>
 <body>
+  <nav class="nav-dashboard">
+    <a href="dashboard.html">🏠 Ir al Dashboard</a>
+  </nav>
   <header>
     <div class="container">
       <div class="header-content">
