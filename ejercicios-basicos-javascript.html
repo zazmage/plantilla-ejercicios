@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <title>🔥 Taller: Fundamentos de JavaScript - 20 Ejercicios</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+      color: #2c3e50;
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    header {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 3rem 0;
+      text-align: center;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+      position: relative;
+      overflow: hidden;
+    }
+
+    header::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="%23ffffff" stroke-width="0.5" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
+      opacity: 0.1;
+    }
+
+    .header-content {
+      position: relative;
+      z-index: 1;
+    }
+
+    h1 {
+      font-size: 2.8rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+    }
+
+    .subtitle {
+      font-size: 1.2rem;
+      opacity: 0.9;
+      max-width: 600px;
+      margin: 0 auto;
+      font-weight: 300;
+    }
+
+    .progress-bar {
+      background: rgba(255,255,255,0.2);
+      height: 8px;
+      border-radius: 4px;
+      margin: 2rem auto 0;
+      max-width: 400px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #4CAF50, #8BC34A);
+      width: 0%;
+      border-radius: 4px;
+      transition: width 0.3s ease;
+    }
+
+    main {
+      padding: 3rem 0;
+    }
+
+    .section {
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+      margin-bottom: 2.5rem;
+      padding: 2.5rem;
+      position: relative;
+      overflow: hidden;
+      transform: translateY(0);
+      transition: all 0.3s ease;
+    }
+
+    .section:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 25px 50px rgba(0,0,0,0.15);
+    }
+
+    .difficulty-badge {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .basic {
+      background: linear-gradient(135deg, #4CAF50, #8BC34A);
+      color: white;
+    }
+
+    .intermediate {
+      background: linear-gradient(135deg, #FF9800, #FFC107);
+      color: white;
+    }
+
+    .advanced {
+      background: linear-gradient(135deg, #F44336, #E91E63);
+      color: white;
+    }
+
+    .challenge {
+      background: linear-gradient(135deg, #9C27B0, #673AB7);
+      color: white;
+    }
+
+    .real-world {
+      background: linear-gradient(135deg, #2196F3, #03A9F4);
+      color: white;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 1.5rem;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .section-icon {
+      width: 50px;
+      height: 50px;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 1.5rem;
+      flex-shrink: 0;
+    }
+
+    h2 {
+      font-size: 1.8rem;
+      color: #2c3e50;
+      font-weight: 600;
+      margin: 0;
+      flex: 1;
+    }
+
+    .exercise-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+      gap: 2rem;
+      margin-top: 2rem;
+    }
+
+    .exercise-card {
+      background: #f8f9fa;
+      border-radius: 12px;
+      padding: 1.5rem;
+      border: 2px solid transparent;
+      transition: all 0.3s ease;
+      position: relative;
+    }
+
+    .exercise-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+      border-color: #667eea;
+    }
+
+    .exercise-number {
+      position: absolute;
+      top: -10px;
+      left: 1rem;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      color: white;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 0.9rem;
+    }
+
+    .exercise-title {
+      margin: 0.5rem 0 1rem 0;
+      color: #2c3e50;
+      font-size: 1.1rem;
+      font-weight: 600;
+    }
+
+    .exercise-description {
+      color: #5a6c7d;
+      margin-bottom: 1rem;
+      line-height: 1.5;
+    }
+
+    .exercise-example {
+      background: #e9ecef;
+      padding: 0.8rem;
+      border-radius: 6px;
+      font-family: 'Fira Code', monospace;
+      font-size: 0.9rem;
+      color: #495057;
+      margin-top: 0.5rem;
+    }
+
+    .concepts-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1.5rem;
+      margin: 2rem 0;
+    }
+
+    .concept-card {
+      background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+      border-radius: 12px;
+      padding: 1.5rem;
+      text-align: center;
+      border: 1px solid #dee2e6;
+      transition: all 0.3s ease;
+    }
+
+    .concept-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    }
+
+    .concept-icon {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .concept-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #2c3e50;
+      margin-bottom: 0.5rem;
+    }
+
+    .tips-box {
+      background: linear-gradient(135deg, #e3f2fd, #bbdefb);
+      border: 1px solid #2196f3;
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin: 2rem 0;
+    }
+
+    .tips-box h3 {
+      color: #1976d2;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .tips-list {
+      list-style: none;
+      padding: 0;
+    }
+
+    .tips-list li {
+      margin-bottom: 0.8rem;
+      padding-left: 1.5rem;
+      position: relative;
+    }
+
+    .tips-list li::before {
+      content: '💡';
+      position: absolute;
+      left: 0;
+      top: 0;
+    }
+
+    code {
+      background: #f1f3f4;
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+      font-family: 'Fira Code', 'Consolas', monospace;
+      color: #d73a49;
+      font-size: 0.9rem;
+      font-weight: 500;
+    }
+
+    .warning-box {
+      background: linear-gradient(135deg, #fff3e0, #ffcc02);
+      border: 1px solid #ff9800;
+      border-radius: 8px;
+      padding: 1rem;
+      margin: 1rem 0;
+      display: flex;
+      align-items: flex-start;
+      gap: 0.5rem;
+    }
+
+    .warning-box::before {
+      content: '⚠️';
+      font-size: 1.2rem;
+      margin-top: 0.1rem;
+    }
+
+    .success-box {
+      background: linear-gradient(135deg, #e8f5e8, #c8e6c9);
+      border: 1px solid #4caf50;
+      border-radius: 8px;
+      padding: 1rem;
+      margin: 1rem 0;
+      display: flex;
+      align-items: flex-start;
+      gap: 0.5rem;
+    }
+
+    .success-box::before {
+      content: '🎉';
+      font-size: 1.2rem;
+      margin-top: 0.1rem;
+    }
+
+    footer {
+      background: #2c3e50;
+      color: white;
+      text-align: center;
+      padding: 2rem 0;
+      margin-top: 3rem;
+    }
+
+    .footer-content {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .author-tag {
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      padding: 0.5rem 1rem;
+      border-radius: 25px;
+      font-weight: 500;
+    }
+
+    @media (max-width: 768px) {
+      h1 { font-size: 2.2rem; }
+      .section { padding: 1.5rem; margin-bottom: 1.5rem; }
+      .exercise-grid { grid-template-columns: 1fr; }
+      .concepts-grid { grid-template-columns: repeat(2, 1fr); }
+      .exercise-card { padding: 1rem; }
+    }
+
+    @media (max-width: 480px) {
+      .concepts-grid { grid-template-columns: 1fr; }
+    }
+
+    .pulse {
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0% { opacity: 1; }
+      50% { opacity: 0.7; }
+      100% { opacity: 1; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container">
+      <div class="header-content">
+        <h1>🔥 Fundamentos de JavaScript</h1>
+        <p class="subtitle">Domina las bases de la programación con 20 ejercicios progresivos que cubren variables, condicionales, bucles y funciones</p>
+        <div class="progress-bar">
+          <div class="progress-fill" id="progress"></div>
+        </div>
+        <p style="margin-top: 1rem; font-size: 0.9rem; opacity: 0.8;">Tu progreso se guardará mientras practicas</p>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="container">
+
+      <section class="section">
+        <div class="section-header">
+          <div class="section-icon">
+            <i class="fas fa-map"></i>
+          </div>
+          <h2>🗺️ Tu Ruta de Aprendizaje</h2>
+        </div>
+        
+        <p>🚀 <strong>¡Bienvenido al entrenamiento más completo de JavaScript!</strong> Este taller está diseñado para llevarte paso a paso desde los conceptos más básicos hasta casos reales de programación.</p>
+        
+        <div class="concepts-grid">
+          <div class="concept-card">
+            <div class="concept-icon">📦</div>
+            <div class="concept-title">Variables</div>
+            <p>Aprende a declarar y usar distintos tipos de datos</p>
+          </div>
+          <div class="concept-card">
+            <div class="concept-icon">🤔</div>
+            <div class="concept-title">Condicionales</div>
+            <p>Toma decisiones con <code>if</code>, <code>else if</code> y <code>else</code></p>
+          </div>
+          <div class="concept-card">
+            <div class="concept-icon">🔄</div>
+            <div class="concept-title">Bucles For</div>
+            <p>Repite acciones con un contador</p>
+          </div>
+          <div class="concept-card">
+            <div class="concept-icon">⚙️</div>
+            <div class="concept-title">Funciones</div>
+            <p>Encapsula lógica reutilizable</p>
+          </div>
+        </div>
+
+        <div class="tips-box">
+          <h3><i class="fas fa-lightbulb"></i> Consejos para el éxito</h3>
+          <ul class="tips-list">
+            <li><strong>Practica en orden:</strong> Cada ejercicio construye sobre el anterior</li>
+            <li><strong>Experimenta:</strong> Modifica los ejemplos para entender mejor</li>
+            <li><strong>No te saltes pasos:</strong> Los fundamentos son cruciales</li>
+            <li><strong>Usa console.log():</strong> Es tu mejor aliado para debuggear</li>
+            <li><strong>Persiste:</strong> La programación requiere práctica constante</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- EJERCICIOS BÁSICOS -->
+      <section class="section">
+        <div class="section-header">
+          <div class="section-icon">
+            <i class="fas fa-seedling"></i>
+          </div>
+          <h2>🌱 Nivel 1: Fundamentos Básicos</h2>
+          <div class="difficulty-badge basic">Básico</div>
+        </div>
+        
+        <p>🎯 <strong>Empezamos con lo esencial:</strong> Domina cada concepto por separado antes de combinarlos.</p>
+
+        <div class="exercise-grid">
+          <div class="exercise-card">
+            <div class="exercise-number">1</div>
+            <h3 class="exercise-title">🏷️ Declara tus Variables</h3>
+            <p class="exercise-description">
+              Crea variables para almacenar tu nombre, tu edad, tu ciudad y un indicador de si eres estudiante. Muestra cada valor en consola.
+            </p>
+            <div class="exercise-example">
+              <!-- Solo indica qué se debe hacer, sin mostrar la solución -->
+              <!-- Declara: nombre, edad, ciudad, esEstudiante -->
+              <!-- Usa console.log() para mostrar cada variable -->
+            </div>
+          </div>
+
+          <div class="exercise-card">
+            <div class="exercise-number">2</div>
+            <h3 class="exercise-title">🧮 Contador Incremental</h3>
+            <p class="exercise-description">
+              Utiliza una variable contador que inicie en 0 y aumente de 3 en 3 hasta alcanzar 30. Muestra cada valor en consola.
+            </p>
+            <div class="exercise-example">
+              <!-- Define una variable contador -->
+              <!-- Usa un bucle for para incrementar de 3 en 3 -->
+              <!-- Muestra cada valor con console.log() -->
+            </div>
+          </div>
+
+          <div class="exercise-card">
+            <div class="exercise-number">3</div>
+            <h3 class="exercise-title">🚦 Control de Semáforo</h3>
+            <p class="exercise-description">
+              Crea un programa que reciba la edad de una persona (por medio de una variable) y determine:<br>
+              • Si la edad es menor de 16: “Muy joven para conducir”.<br>
+              • Si la edad está entre 16 y 17: “Permiso condicional”.<br>
+              • Si la edad está entre 18 y 64: “Puede conducir”.<br>
+              • Si la edad es 65 o mayor: “Conductor senior”.
+            </p>
+            <div class="exercise-example">
+              <!-- Declara una variable edadPersona -->
+              <!-- Usa condicionales if / else if / else para evaluar edades -->
+              <!-- Muestra los mensajes correspondientes con console.log() -->
+            </div>
+          </div>
+
+          <div class="exercise-card">
+            <div class="exercise-number">4</div>
+            <h3 class="exercise-title">🎵 Tabla de Multiplicar</h3>
+            <p class="exercise-description">
+              Utiliza un bucle <code>for</code> para mostrar en consola la tabla de multiplicar del 9, desde 9 × 1 hasta 9 × 12.
+            </p>
+            <div class="exercise-example">
+              <!-- Crea un bucle for que vaya de 1 a 12 -->
+              <!-- En cada iteración, muestra en consola “9 x i = resultado” -->
+            </div>
+          </div>
+
+          <div class="exercise-card">
+            <div class="exercise-number">5</div>
+            <h3 class="exercise-title">📐 Perímetro y Área</h3>
+            <p class="exercise-description">
+              Dado un rectángulo con base y altura definidas en variables, calcula su perímetro y área, y muestra los resultados.
+            </p>
+            <div class="exercise-example">
+              <!-- Declara variables base y altura -->
+              <!-- Calcula perímetro = 2 * (base + altura) -->
+              <!-- Calcula área = base * altura -->
+              <!-- Muestra ambos con console.log() -->
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- EJERCICIOS INTERMEDIOS -->
+      <section class="section">
+        <div class="section-header">
+          <div class="section-icon">
+            <i class="fas fa-chart-line"></i>
+          </div>
+          <h2>📈 Nivel 2: Combinando Conceptos</h2>
+          <div class="difficulty-badge intermediate">Intermedio</div>
+        </div>
+        
+        <p>🔥 <strong>¡Hora de combinar!</strong> Estos ejercicios requieren usar variables, condicionales y bucles juntos para resolver problemas más complejos.</p>
+
+        <div class="exercise-grid">
+          <div class="exercise-card">
+            <div class="exercise-number">6</div>
+            <h3 class="exercise-title">🟢 Par o Impar</h3>
+            <p class="exercise-description">
+              Escribe un programa que reciba un número entero y determine si es par o impar. Prueba con varios valores usando un bucle que incremente desde 1 hasta 20.
+            </p>
+            <div class="exercise-example">
+              <!-- Crea un bucle for de 1 a 20 -->
+              <!-- En cada iteración, evalúa si n % 2 === 0 -->
+              <!-- Muestra “n es par” o “n es impar” con console.log() -->
+            </div>
+          </div>
+
+          <div class="exercise-card">
+            <div class="exercise-number">7</div>
+            <h3 class="exercise-title">➕ Suma de Consecutivos</h3>
+            <p class="exercise-description">
+              Crea un programa que calcule la suma de todos los números desde 1 hasta un valor <code>n</code> definido en una variable. Por ejemplo, si <code>n = 10</code>, debe mostrar 55.
+            </p>
+            <div class="exercise-example">
+              <!-- Declara variable n -->
+              <!-- Inicializa sumaTotal en 0 -->
+              <!-- Usa bucle for para sumar de 1 a n -->
+              <!-- Muestra el resultado con console.log() -->
+            </div>
+          </div>
+
+          <div class="exercise-card">
+            <div class="exercise-number">8</div>
+            <h3 class="exercise-title">🔢 Factorial con Bucle</h3>
+            <p class="exercise-description">
+              Implementa un programa que calcule el factorial de un número <code>m</code> usando un bucle <code>for</code>. Por ejemplo, si <code>m = 5</code>, mostrar 120.
+            </p>
+            <div class="exercise-example">
+              <!-- Declara variable m -->
+              <!-- Inicializa factorial en 1 -->
+              <!-- Usa bucle for desde 1 hasta m multiplicando factorial -->
+              <!-- Muestra resultado con console.log() -->
+            </div>
+          </div>
+
+          <div class="exercise-card">
+            <div class="exercise-number">9</div>
+            <h3 class="exercise-title">⭐ Pirámide de Asteriscos</h3>
+            <p class="exercise-description">
+              Utiliza bucles anidados para imprimir en consola una pirámide de asteriscos de 7 niveles:
+            </p>
+            <div class="exercise-example">
+              <!-- Usa bucle externo de 1 a 7 para representar filas -->
+              <!-- En cada fila, agrega espacios y asteriscos según corresponda -->
+              <!-- Muestra la línea completa con console.log() -->
+            </div>
+          </div>
+
+          <div class="exercise-card">
+            <div class="exercise-number">10</div>
+            <h3 class="exercise-title">🌡️ Conversión y Evaluación de Temperatura</h3>
+            <p class="exercise-description">
+              Define una variable con una temperatura en grados Celsius. Crea un programa que:
+              • Convierta esa temperatura a Fahrenheit.<br>
+              • Evalúe si hace frío (< 15 °C), templado (15 °C–25 °C) o calor (> 25 °C), mostrando un mensaje acorde.
+            </p>
+            <div class="exercise-example">
+              <!-- Declara variable celsius -->
+              <!-- Convierte a Fahrenheit con fórmula -->
+              <!-- Usa condicionales para evaluar frío, templado o calor -->
+              <!-- Muestra mensajes con console.log() -->
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- EJERCICIOS AVANZADOS -->
+      <section class="section">
+        <div class="section-header">
+          <div class="section-icon">
+            <i class="fas fa-rocket"></i>
+          </div>
+          <h2>🚀 Nivel 3: Dominando Funciones</h2>
+          <div class="difficulty-badge advanced">Avanzado</div>
+        </div>
+        
+        <p>💪 <strong>¡Momento de brillar!</strong> Estos ejercicios requieren encapsular lógica en funciones y combinar todos los conceptos aprendidos.</p>
+
+        <div class="exercise-grid">
+          <div class="exercise-card">
+            <div class="exercise-number">11</div>
+            <h3 class="exercise-title">⚙️ Función de Potencia</h3>
+            <p class="exercise-description">
+              Crea una función <code>elevar(base, exponente)</code> que retorne la potencia correspondiente. Usa un bucle <code>for</code> dentro de la función para multiplicar sucesivamente.
+            </p>
+            <div class="exercise-example">
+              <!-- Define la función elevar(base, exponente) -->
+              <!-- Usa un bucle for para multiplicar base exponente veces -->
+              <!-- Retorna el resultado -->
+            </div>
+          </div>
+
+          <div class="exercise-card">
+            <div class="exercise-number">12</div>
+            <h3 class="exercise-title">⏲️ Conversor a Segundos</h3>
+            <p class="exercise-description">
+              Implementa una función <code>aSegundos(horas, minutos, segundos)</code> que convierta las tres partes en un total de segundos.
+            </p>
+            <div class="exercise-example">
+              <!-- Define la función aSegundos(horas, minutos, segundos) -->
+              <!-- Retorna horas*3600 + minutos*60 + segundos -->
+            </div>
+          </div>
+
+          <div class="exercise-card">
+            <div class="exercise-number">13</div>
+            <h3 class="exercise-title">🔄 Verificador de Palíndromo</h3>
+            <p class="exercise-description">
+              Crea una función <code>esPalindromo(texto)</code> que determine si una cadena es un palíndromo (se lee igual de izquierda a derecha y viceversa), ignorando espacios y mayúsculas. Utiliza un bucle <code>for</code> para comparar caracteres.
+            </p>
+            <div class="exercise-example">
+              <!-- Define la función esPalindromo(texto) -->
+              <!-- Limpia espacios y convierte a minúsculas -->
+              <!-- Usa un for para comparar texto[i] con texto[longitud-1-i] -->
+            </div>
+          </div>
+
+          <div class="exercise-card">
+            <div class="exercise-number">14</div>
+            <h3 class="exercise-title">🔁 Factorial Recursivo</h3>
+            <p class="exercise-description">
+              Redefine el cálculo de factorial usando recursión en la función <code>factorialRec(n)</code>, en lugar de un bucle.
+            </p>
+            <div class="exercise-example">
+              <!-- Define la función factorialRec(n) -->
+              <!-- Caso base: si n <= 1 retorna 1 -->
+              <!-- Caso recursivo: retorna n * factorialRec(n-1) -->
+            </div>
+          </div>
+
+          <div class="exercise-card">
+            <div class="exercise-number">15</div>
+            <h3 class="exercise-title">🎲 Adivina el Número</h3>
+            <p class="exercise-description">
+              Crea un juego sencillo donde la computadora “piense” un número secreto entre 1 y 50 (utiliza <code>Math.random()</code>), y el usuario haga intentos definidos en una variable. Después de cada intento, muestra en consola si el número ingresado es mayor, menor o igual al secreto. Termina cuando acierte.
+            </p>
+            <div class="exercise-example">
+              <!-- Declara variable secreto con Math.random() -->
+              <!-- Usa un bucle while hasta adivinar -->
+              <!-- En cada iteración, compara intento con secreto -->
+              <!-- Muestra pistas con console.log() -->
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- RETOS LÓGICOS -->
+      <section class="section">
+        <div class="section-header">
+          <div class="section-icon">
+            <i class="fas fa-brain"></i>
+          </div>
+          <h2>🧠 Nivel 4: Retos de Lógica</h2>
+          <div class="difficulty-badge challenge">Reto</div>
+        </div>
+        
+        <p>🔥 <strong>¡Desafía tu mente!</strong> Estos problemas ponen a prueba tu capacidad de aplicar condicionales, bucles y funciones para resolver situaciones complejas sin usar arrays.</p>
+
+        <div class="exercise-grid">
+          <div class="exercise-card">
+            <div class="exercise-number">16</div>
+            <h3 class="exercise-title">🔢 Números Primos</h3>
+            <p class="exercise-description">
+              Crea un programa que encuentre todos los números primos entre 2 y 100 utilizando bucles y condicionales. Imprime cada primo en consola.
+            </p>
+            <div class="exercise-example">
+              <!-- Usa un bucle for de 2 a 100 para evaluar cada número -->
+              <!-- Para cada número, usa otro for hasta sqrt(num) para verificar divisibilidad -->
+              <!-- Si es primo, imprime en consola -->
+            </div>
+          </div>
+
+          <div class="exercise-card">
+            <div class="exercise-number">17</div>
+            <h3 class="exercise-title">📏 Máximo Común Divisor (MCD)</h3>
+            <p class="exercise-description">
+              Implementa el algoritmo de Euclides en una función <code>calcularMCD(a, b)</code>. Prueba con varios pares de números y muestra el resultado.
+            </p>
+            <div class="exercise-example">
+              <!-- Define función calcularMCD(a, b) -->
+              <!-- Mientras b != 0, actualiza a y b según Euclides -->
+              <!-- Retorna a cuando b sea 0 -->
+            </div>
+          </div>
+
+          <div class="exercise-card">
+            <div class="exercise-number">18</div>
+            <h3 class="exercise-title">🔎 Números Perfectos</h3>
+            <p class="exercise-description">
+              Un número perfecto es aquel que es la suma de sus divisores propios (excepto él mismo). Por ejemplo, 6 = 1 + 2 + 3. Encuentra todos los números perfectos menores de 500.
+            </p>
+            <div class="exercise-example">
+              <!-- Usa un bucle for de 2 a 499 para evaluar cada número -->
+              <!-- Para cada número, suma divisores propios usando un bucle for -->
+              <!-- Si la suma de divisores == número, imprime en consola -->
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- CASOS REALES -->
+      <section class="section">
+        <div class="section-header">
+          <div class="section-icon">
+            <i class="fas fa-briefcase"></i>
+          </div>
+          <h2>💼 Nivel 5: Casos del Mundo Real</h2>
+          <div class="difficulty-badge real-world">Mundo Real</div>
+        </div>
+        
+        <p>🌍 <strong>¡Aplica todo lo aprendido!</strong> Estos ejercicios simulan situaciones prácticas que podrías enfrentar como desarrollador.</p>
+
+        <div class="exercise-grid">
+          <div class="exercise-card">
+            <div class="exercise-number">19</div>
+            <h3 class="exercise-title">📝 Calculadora Básica</h3>
+            <p class="exercise-description">
+              Crea una calculadora que reciba dos números y una operación (suma, resta, multiplicación o división) por medio de variables. Implementa una función <code>calcular(a, b, operador)</code> que retorne el resultado. Muestra el resultado en consola.
+            </p>
+            <div class="exercise-example">
+              <!-- Define función calcular(a, b, operador) -->
+              <!-- Usa condicionales para determinar la operación -->
+              <!-- Retorna resultado o mensaje de error si operador inválido -->
+            </div>
+          </div>
+
+          <div class="exercise-card">
+            <div class="exercise-number">20</div>
+            <h3 class="exercise-title">💵 Conversor de Moneda</h3>
+            <p class="exercise-description">
+              Simula un conversor de moneda que convierta pesos colombianos a dólares estadounidenses. Define una tasa de cambio en una variable y crea una función <code>convertirCOPaUSD(cop)</code> que retorne el valor en USD. Muestra el resultado con dos decimales.
+            </p>
+            <div class="exercise-example">
+              <!-- Define variable tasaCambio -->
+              <!-- Define función convertirCOPaUSD(cop) que retorne cop * tasaCambio con toFixed(2) -->
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <footer>
+    <div class="container footer-content">
+      <span>© 2025 Taller de Fundamentos de JavaScript</span>
+      <span class="author-tag">Daniel Castaño</span>
+    </div>
+  </footer>
+</body>
+</html>
