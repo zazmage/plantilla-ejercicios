@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <title>🔥 Taller Full-Stack CRUD Avanzado</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <style>
+    /* Estilos iguales a la versión anterior */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%); color: #2c3e50; line-height: 1.7; min-height: 100vh; }
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+    header { background: linear-gradient(135deg, #1a202c 0%, #2d3748 50%, #4a5568 100%); color: white; padding: 4rem 0; text-align: center; box-shadow: 0 20px 40px rgba(0,0,0,0.3); position: relative; overflow: hidden; }
+    header::before { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="8" height="8" patternUnits="userSpaceOnUse"><path d="M 8 0 L 0 0 0 8" fill="none" stroke="%23ffffff" stroke-width="0.3" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>'); }
+    header::after { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px); background-size: 50px 50px; animation: float 20s ease-in-out infinite; }
+    @keyframes float { 0%, 100% { transform: translateY(0px) rotate(0deg); } 50% { transform: translateY(-20px) rotate(180deg); } }
+    .header-content { position: relative; z-index: 1; }
+    h1 { font-size: 3.5rem; font-weight: 800; margin-bottom: 1.5rem; text-shadow: 3px 3px 6px rgba(0,0,0,0.4); background: linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; animation: gradient 3s ease-in-out infinite alternate; }
+    @keyframes gradient { 0% { filter: hue-rotate(0deg); } 100% { filter: hue-rotate(45deg); } }
+    .subtitle { font-size: 1.4rem; opacity: 0.95; max-width: 700px; margin: 0 auto 2rem; font-weight: 400; text-shadow: 1px 1px 2px rgba(0,0,0,0.3); }
+    .tech-badges { display: flex; justify-content: center; gap: 1.5rem; margin-top: 2.5rem; flex-wrap: wrap; }
+    .badge { background: rgba(255,255,255,0.15); padding: 0.8rem 1.5rem; border-radius: 30px; font-size: 1rem; font-weight: 600; backdrop-filter: blur(15px); border: 2px solid rgba(255,255,255,0.3); transition: all 0.3s ease; cursor: pointer; }
+    .badge:hover { background: rgba(255,255,255,0.25); transform: translateY(-3px); box-shadow: 0 10px 25px rgba(0,0,0,0.2); }
+    main { padding: 4rem 0; }
+    .section { background: rgba(255,255,255,0.95); border-radius: 20px; box-shadow: 0 25px 50px rgba(0,0,0,0.15); margin-bottom: 3rem; padding: 3rem; position: relative; overflow: hidden; transform: translateY(0); transition: all 0.4s ease; backdrop-filter: blur(10px); }
+    .section:hover { transform: translateY(-8px); box-shadow: 0 35px 70px rgba(0,0,0,0.2); }
+    .section::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 6px; background: linear-gradient(90deg, #ff6b6b, #4ecdc4, #45b7d1, #96ceb4, #feca57); background-size: 300% 100%; animation: shimmer 3s ease-in-out infinite; }
+    @keyframes shimmer { 0%, 100% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } }
+    .section-header { display: flex; align-items: center; margin-bottom: 2rem; gap: 1.5rem; }
+    .section-icon { width: 60px; height: 60px; background: linear-gradient(135deg, #667eea, #764ba2); border-radius: 16px; display: flex; align-items: center; justify-content: center; color: white; font-size: 1.8rem; box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3); transition: all 0.3s ease; }
+    .section-icon:hover { transform: rotate(5deg) scale(1.1); }
+    h2 { font-size: 2.2rem; color: #2c3e50; font-weight: 700; margin: 0; background: linear-gradient(135deg, #2c3e50, #3498db); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .step-list { list-style: none; counter-reset: step-counter; margin: 1.5rem 0; }
+    .step-list li { counter-increment: step-counter; margin-bottom: 1.5rem; padding-left: 4rem; position: relative; background: #f8f9fa; padding: 1.5rem 1.5rem 1.5rem 4rem; border-radius: 12px; border-left: 4px solid #667eea; transition: all 0.3s ease; }
+    .step-list li:hover { background: #e3f2fd; transform: translateX(5px); }
+    .step-list li::before { content: counter(step-counter); position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); width: 2.5rem; height: 2.5rem; background: linear-gradient(135deg, #667eea, #764ba2); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 1rem; box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3); }
+    .command-box { background: linear-gradient(135deg, #2d3748, #4a5568); color: #e2e8f0; padding: 1.5rem 2rem; border-radius: 12px; font-family: 'Fira Code', 'JetBrains Mono', monospace; margin: 1.5rem 0; border-left: 6px solid #48bb78; display: flex; align-items: center; gap: 1rem; box-shadow: 0 8px 25px rgba(0,0,0,0.15); transition: all 0.3s ease; }
+    .command-box:hover { transform: translateX(5px); box-shadow: 0 12px 35px rgba(0,0,0,0.2); }
+    .command-box::before { content: '💻'; font-size: 1.5rem; }
+    .warning-box { background: linear-gradient(135deg, #fff3cd, #ffeaa7); border: 2px solid #ffc107; border-radius: 12px; padding: 1.5rem; margin: 1.5rem 0; display: flex; align-items: flex-start; gap: 1rem; box-shadow: 0 8px 25px rgba(255, 193, 7, 0.2); }
+    .warning-box::before { content: '⚡'; font-size: 1.5rem; margin-top: 0.2rem; }
+    .success-box { background: linear-gradient(135deg, #d4edda, #a3d9a4); border: 2px solid #28a745; border-radius: 12px; padding: 1.5rem; margin: 1.5rem 0; display: flex; align-items: flex-start; gap: 1rem; box-shadow: 0 8px 25px rgba(40, 167, 69, 0.2); }
+    .success-box::before { content: '🎉'; font-size: 1.5rem; margin-top: 0.2rem; }
+    .deliverable-box { background: linear-gradient(135deg, #e3f2fd, #bbdefb); border: 2px solid #2196f3; border-radius: 16px; padding: 2rem; margin: 2rem 0; position: relative; }
+    .deliverable-box::before { content: '📋'; position: absolute; top: -8px; right: -8px; font-size: 3rem; opacity: 0.3; }
+    .deliverable-box h3 { color: #1976d2; margin-bottom: 1rem; font-size: 1.4rem; display: flex; align-items: center; gap: 0.8rem; }
+    footer { background: linear-gradient(135deg, #2c3e50, #34495e); color: white; text-align: center; padding: 3rem 0; margin-top: 4rem; position: relative; overflow: hidden; }
+    footer::before { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="dots" width="20" height="20" patternUnits="userSpaceOnUse"><circle cx="10" cy="10" r="1" fill="%23ffffff" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23dots)"/></svg>'); }
+    .footer-content { display: flex; align-items: center; justify-content: center; gap: 1.5rem; flex-wrap: wrap; position: relative; z-index: 1; }
+    .author-tag { background: linear-gradient(135deg, #667eea, #764ba2); padding: 0.8rem 1.5rem; border-radius: 30px; font-weight: 600; box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3); transition: all 0.3s ease; }
+    .author-tag:hover { transform: translateY(-2px); box-shadow: 0 12px 35px rgba(102, 126, 234, 0.4); }
+    @media (max-width: 768px) { h1 { font-size: 2.5rem; } .section { padding: 2rem; margin-bottom: 2rem; } .feature-grid { grid-template-columns: 1fr; } .tech-badges { gap: 1rem; } .badge { padding: 0.6rem 1rem; font-size: 0.9rem; } .section-header { flex-direction: column; text-align: center; } .section-icon { width: 50px; height: 50px; font-size: 1.5rem; } h2 { font-size: 1.8rem; } }
+    .pulse { animation: pulse 2s infinite; }
+    @keyframes pulse { 0% { opacity: 1; transform: scale(1); } 50% { opacity: 0.8; transform: scale(1.05); } 100% { opacity: 1; transform: scale(1); } }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container">
+      <div class="header-content">
+        <h1>🔥 Taller Full-Stack CRUD Avanzado</h1>
+        <p class="subtitle">Construye tu aplicación completa con CRUD para usuarios, productos y posts usando Node.js + TypeScript en el backend y React en el frontend</p>
+        <div class="tech-badges">
+          <span class="badge">🟢 Node.js</span>
+          <span class="badge">📘 TypeScript</span>
+          <span class="badge">⚡ Express</span>
+          <span class="badge">⚛️ React</span>
+          <span class="badge">🔥 Vite</span>
+          <span class="badge">🎯 CRUD</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="container">
+
+      <!-- Introducción y Objetivos -->
+      <section class="section">
+        <div class="section-header">
+          <div class="section-icon">
+            <i class="fas fa-target"></i>
+          </div>
+          <h2>🎯 ¡Tu Misión Full-Stack!</h2>
+        </div>
+        
+        <p>💪 <strong>¿Listo para el desafío completo?</strong> En este taller vas a construir una aplicación web que gestione <strong>usuarios</strong>, <strong>productos</strong> y <strong>posts</strong> con todas las operaciones CRUD (Create, Read, Update, Delete). Tu backend será robusto con TypeScript y tu frontend será interactivo con React y Vite.</p>
+        
+        <div class="success-box">
+          <div>
+            <strong>🏆 Al completar este taller tendrás:</strong> Una aplicación web profesional que muestre tu dominio del desarrollo Full-Stack, desde la API hasta la interfaz de usuario. ¡Ideal para tu portafolio!
+          </div>
+        </div>
+      </section>
+
+      <!-- Fase 1: Backend API -->
+      <section class="section">
+        <div class="section-header">
+          <div class="section-icon">
+            <i class="fas fa-server"></i>
+          </div>
+          <h2>Fase 1: Backend API con TypeScript</h2>
+        </div>
+        
+        <p>🚀 <strong>¡Construye el cerebro de tu aplicación!</strong> Aquí solo incluiremos la configuración de TypeScript y package.json, junto a pistas sin código completo.</p>
+
+        <div class="deliverable-box">
+          <h3><i class="fas fa-clipboard-check"></i> Configuración de TypeScript</h3>
+          <p>Crea el archivo <code>tsconfig.json</code> con los siguientes valores clave:</p>
+          <pre>{
+  "compilerOptions": {
+    "target": "es2020",
+    "module": "es2020",
+    "moduleResolution": "node",
+    "outDir": "dist",
+    "rootDir": "src",
+    "strict": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "skipLibCheck": true
+  }
+}</pre>
+          <p>Este archivo habilita <em>strict</em> para chequeos rigurosos, define <code>outDir</code> y <code>rootDir</code> para separar código fuente de compilado, y configura módulos ES.</p>
+        </div>
+
+        <div class="deliverable-box">
+          <h3><i class="fas fa-clipboard-list"></i> Configuración en package.json</h3>
+          <p>Asegúrate de tener un <code>package.json</code> similar a este para scripts y dependencias:</p>
+          <pre>{
+  "name": "taller-crud-avanzado",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "tsx watch src/server.ts",
+    "build": "tsc",
+    "start": "node dist/server.js"
+  },
+  "dependencies": {
+    "express": "^5.1.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.x.x",
+    "tsx": "^4.x.x",
+    "@types/express": "^5.x.x",
+    "@types/node": "^20.x.x"
+  }
+}</pre>
+          <p>Los scripts configurados permiten ejecutar en modo desarrollo con <code>dev</code>, compilar con <code>build</code> y arrancar la versión compilada con <code>start</code>.</p>
+        </div>
+
+        <h3>🔧 Pistas y Sugerencias</h3>
+        <ol class="step-list">
+          <li><strong>Inicialización del proyecto</strong>: Usa <code>npm init -y</code> y luego instala Express y las dependencias de desarrollo para TypeScript (<code>npm install express</code>, <code>npm install -D typescript tsx @types/express @types/node</code>).</li>
+          <li><strong>Nombres de carpetas</strong>: Crea una carpeta <code>src</code> para el código fuente. Dentro, tendrás <code>server.ts</code> y una carpeta <code>models</code> para las interfaces.</li>
+          <li><strong>Módulo vs CommonJS</strong>: Al usar <code>"type": "module"</code> en package.json, puedes usar import/export en lugar de require. Asegúrate de que <code>tsconfig.json</code> esté configurado para generar código compatible.</li>
+          <li><strong>Guión de compilación</strong>: Al final, ejecuta <code>npm run build</code> para generar la carpeta <code>dist</code>, y luego <code>npm run start</code> para iniciar el servidor compilado.</li>
+          <li><strong>Interfaces TypeScript</strong>: Crea interfaces para <code>Usuario</code>, <code>Producto</code> y <code>Post</code> dentro de <code>src/models.ts</code>, definiendo solo los campos necesarios (por ejemplo, id, name, email en Usuario).</li>
+          <li><strong>Manejo de errores</strong>: Planea usar <code>try/catch</code> dentro de los controladores. No ingreses el código completo; mejor anota que cada endpoint debe retornar status 200/201 en casos de éxito y 400/404/500 en errores.</li>
+        </ol>
+
+        <div class="warning-box">
+          <div><strong>⚡ Recuerda:</strong> No incluyas el código de implementación en el taller. Basta con las configuraciones y las sugerencias para guiar al estudiante a desarrollarlo por sí mismo.</div>
+        </div>
+      </section>
+
+      <!-- Fase 2: Frontend React -->
+      <section class="section">
+        <div class="section-header">
+          <div class="section-icon">
+            <i class="fas fa-desktop"></i>
+          </div>
+          <h2>Fase 2: Frontend React Interactivo</h2>
+        </div>
+        
+        <p>⚛️ <strong>¡Ahora dale vida a tu API!</strong> Aquí describiremos únicamente la configuración básica y algunos consejos, sin código completo.</p>
+
+        <h3>🚀 Configuración del Proyecto Frontend</h3>
+        <ol class="step-list">
+          <li><strong>Crear con Vite</strong>: Corre <code>npm create vite@latest gestion-app -- --template react-ts</code> para generar la base con React y TypeScript.</li>
+          <li><strong>Instalación de librerías</strong>: Opcionalmente, agrega <code>axios</code> para llamadas HTTP (<code>npm install axios</code>), <code>react-router-dom</code> para rutas (<code>npm install react-router-dom</code>) y un framework de estilos (Tailwind o styled-components).</li>
+          <li><strong>Estructura recomendada</strong>: Dentro de <code>src/</code>, crea carpetas: <code>components/Usuarios</code>, <code>components/Productos</code>, <code>components/Posts</code> y <code>services/</code>. Allí definirás, respectivamente, los componentes y servicios HTTP.</li>
+          <li><strong>Honorarios del código TypeScript</strong>: Mantén <code>strict</code> en tsconfig de frontend, evita usar <code>any</code>. Declara tipos para props y respuestas de la API.</li>
+        </ol>
+
+        <h3>🔍 Pistas y Sugerencias</h3>
+        <div class="feature-grid">
+          <div class="feature-card">
+            <h4><i class="fas fa-info-circle"></i> Separación de lógica</h4>
+            <p>Coloca todas las llamadas a la API en <code>services/api.ts</code> y exporta funciones como <code>getUsuarios</code>, <code>createUsuario</code>, <code>updateUsuario</code> y <code>deleteUsuario</code>.</p>
+          </div>
+          <div class="feature-card">
+            <h4><i class="fas fa-info-circle"></i> Componentes reutilizables</h4>
+            <p>Define formularios genéricos en <code>components/forms</code> que acepten props de configuración (por ejemplo, campos de entrada y funciones de submit).</p>
+          </div>
+          <div class="feature-card">
+            <h4><i class="fas fa-info-circle"></i> Manejo de estado</h4>
+            <p>Usa <code>useState</code> y <code>useEffect</code> para cargar datos al montar, y llama al servicio HTTP adecuado en cada acción (crear, editar, eliminar).</p>
+          </div>
+          <div class="feature-card">
+            <h4><i class="fas fa-info-circle"></i> Validación simple</h4>
+            <p>Utiliza validaciones básicas en cada campo del formulario (no vacío, email válido) antes de enviar. Puedes usar librerías como <code>react-hook-form</code> o manejarlo manualmente.</p>
+          </div>
+        </div>
+
+        <div class="warning-box">
+          <div><strong>⚡ Recuerda:</strong> En este taller no incluirás bloques de código completo para React; solo indicaciones que orienten el desarrollo.</div>
+        </div>
+      </section>
+
+      <!-- Fase 3: Integración -->
+      <section class="section">
+        <div class="section-header">
+          <div class="section-icon">
+            <i class="fas fa-plug"></i>
+          </div>
+          <h2>Fase 3: ¡Conectando Todo!</h2>
+        </div>
+        
+        <p>🔗 <strong>Integra backend y frontend</strong> probando endpoints con una herramienta (Postman o REST Client) antes de llamar desde React. A continuación, solo pistas:</p>
+
+        <ol class="step-list">
+          <li><strong>Probar endpoints</strong>: Antes de usar React, ejecuta <code>npm run dev</code> en backend y usa Postman para verificar <code>/usuarios</code>, <code>/productos</code> y <code>/posts</code>.</li>
+          <li><strong>Configurar baseURL</strong>: En <code>services/api.ts</code>, define <code>const API = axios.create({ baseURL: 'http://localhost:3000' });</code>. Luego exporta las funciones CRUD, por ejemplo: <code>getUsuarios: () =&gt; API.get('/usuarios')</code>.</li>
+          <li><strong>Manejar errores en React</strong>: Al llamar al servicio, usa <code>.then</code> y <code>.catch</code> o <code>async/await</code> para mostrar mensajes de error con un componente <code>ErrorMessage</code>.</li>
+          <li><strong>Refrescar estado tras acciones</strong>: Después de crear, editar o eliminar, recarga la lista invocando nuevamente la función de obtención (<code>getUsuarios()</code>).</li>
+        </ol>
+
+        <div class="success-box">
+          <div><strong>🎊 ¡Listo!</strong> Tu frontend mostrará datos reales del backend. Recuerda no copiar código; estas sugerencias bastan para guiar tu implementación.</div>
+        </div>
+      </section>
+
+      <!-- Fase 4: Nivel Profesional -->
+      <section class="section">
+        <div class="section-header">
+          <div class="section-icon">
+            <i class="fas fa-graduation-cap"></i>
+          </div>
+          <h2>Fase 4: Llevándolo al Siguiente Nivel</h2>
+        </div>
+        
+        <p>🚀 <strong>Opciones adicionales para producción:</strong> A continuación, solo indicaciones sin código.</p>
+
+        <h3>🛡️ Buenas Prácticas en el Backend</h3>
+        <ol class="step-list">
+          <li><strong>Validación de datos</strong>: Usa una librería como <code>zod</code> o <code>joi</code> para validar en cada endpoint el formato y tipos de JSON recibido.</li>
+          <li><strong>Manejo de configuración</strong>: Extrae variables sensibles (secretos, puertos) en <code>.env</code> y usa <code>dotenv</code> para cargarlas. No incluyas <code>.env</code> en el repositorio.</li>
+          <li><strong>Logger</strong>: Incorpora un logger como <code>winston</code> para registrar a archivos y mejorar el seguimiento en producción.</li>
+          <li><strong>Respuestas unificadas</strong>: Define un formato estándar (por ejemplo, { success: boolean, data: ..., error?: string }) para mantener consistencia.</li>
+        </ol>
+
+        <h3>🎯 Mejoras en el Frontend</h3>
+        <ol class="step-list">
+          <li><strong>Rutas protegidas</strong>: Implementa React Router y envuelve rutas que requieran usuario autenticado con un componente <code>ProtectedRoute</code>.</li>
+          <li><strong>Optimización de renders</strong>: Usa <code>React.memo</code> o <code>useMemo</code> para evitar renders innecesarios en listas largas (por ejemplo, lista de productos o posts).</li>
+          <li><strong>Notificaciones</strong>: Agrega un contexto global para mostrar mensajes de éxito/error (toasts) al realizar acciones CRUD.</li>
+          <li><strong>Testing</strong>: Escribe pruebas unitarias con <code>Jest</code> y <code>React Testing Library</code> para componentes críticos y servicios de API.</li>
+        </ol>
+
+        <div class="success-box">
+          <div><strong>🏆 ¡Felicidades!</strong> Ahora sabes cómo configurar tu entorno TypeScript y package.json, y tienes pistas claras para implementar cada parte sin exponer el código completo. ¡Manos a la obra!</div>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <div class="footer-content">
+        <span>Diseñado con ❤️ por</span>
+        <span class="author-tag">👨‍💻 Daniel Castaño</span>
+        <span class="pulse">✨ ¡Feliz Codificación!</span>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>
